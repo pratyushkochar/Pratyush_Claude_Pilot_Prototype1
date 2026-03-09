@@ -39,9 +39,11 @@ export default function AffirmEmbeddedCheckout({
           totals
         );
 
-        // Set checkout data — affirm.js auto-detects elements with
-        // class="affirm-embedded-checkout" and renders into them.
+        // Configure checkout data then open embedded checkout.
+        // affirm.checkout() sets the data, affirm.checkout.open() triggers
+        // rendering into the .affirm-embedded-checkout element.
         window.affirm.checkout(checkoutObj);
+        window.affirm.checkout.open();
 
         initializedRef.current = true;
         setStatus("ready");
