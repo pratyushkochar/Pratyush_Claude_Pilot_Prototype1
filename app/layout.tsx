@@ -3,8 +3,8 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TechShop - Checkout",
-  description: "Affirm Embedded Checkout Demo",
+  title: "TravelShop - Book Your Stay",
+  description: "Affirm Embedded Checkout Demo — Hotel Booking",
 };
 
 const AFFIRM_PUBLIC_KEY =
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50 text-gray-900 antialiased">
+      <body className="antialiased">
         <Script
           id="affirm-config"
           strategy="beforeInteractive"

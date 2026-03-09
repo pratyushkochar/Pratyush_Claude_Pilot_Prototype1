@@ -1,28 +1,29 @@
-import { CartItem, Address, OrderTotals } from "./types";
+import { CartItem, Address, OrderTotals, TravelDetails } from "./types";
+
+export const sampleTravelDetails: TravelDetails = {
+  hotelName: "The Westin St. Francis San Francisco on Union Square",
+  hotelAddress: "335 Powell St, San Francisco, CA 94102",
+  starRating: 4,
+  checkIn: "Sat, Mar 15",
+  checkOut: "Tue, Mar 18",
+  nights: 3,
+  rooms: 1,
+  guests: 2,
+  roomType: "Traditional Room, 1 King Bed",
+  ratePerNight: 18900, // $189.00
+  taxesAndFees: 6804, // $68.04
+  resortFee: 10500, // $105.00 ($35/night × 3)
+  imageUrl: "https://placehold.co/400x250/1a3c5e/ffffff?text=Hotel+Photo",
+  freeCancellation: true,
+};
 
 export const sampleCartItems: CartItem[] = [
   {
-    display_name: "Wireless Noise-Cancelling Headphones",
-    sku: "WH-1000XM5",
-    unit_price: 34999,
-    qty: 1,
-    item_image_url: "https://placehold.co/120x120/e2e8f0/475569?text=Headphones",
-    item_url: "#",
-  },
-  {
-    display_name: "Premium Phone Case",
-    sku: "PC-ULTRA-BLK",
-    unit_price: 4999,
-    qty: 2,
-    item_image_url: "https://placehold.co/120x120/e2e8f0/475569?text=Case",
-    item_url: "#",
-  },
-  {
-    display_name: "USB-C Fast Charger",
-    sku: "CHG-65W",
-    unit_price: 2999,
-    qty: 1,
-    item_image_url: "https://placehold.co/120x120/e2e8f0/475569?text=Charger",
+    display_name: sampleTravelDetails.hotelName,
+    sku: "HOTEL-WSF-001",
+    unit_price: sampleTravelDetails.ratePerNight,
+    qty: sampleTravelDetails.nights,
+    item_image_url: sampleTravelDetails.imageUrl,
     item_url: "#",
   },
 ];
@@ -47,8 +48,8 @@ export function calculateTotals(items: CartItem[]): OrderTotals {
     (sum, item) => sum + item.unit_price * item.qty,
     0
   );
-  const shipping = 999; // $9.99
-  const tax = Math.round(subtotal * 0.0875); // 8.75% tax
+  const shipping = 0; // No shipping for hotel bookings
+  const tax = sampleTravelDetails.taxesAndFees + sampleTravelDetails.resortFee;
   const total = subtotal + shipping + tax;
   return { subtotal, shipping, tax, total };
 }

@@ -27,6 +27,23 @@ export interface OrderTotals {
   total: number;
 }
 
+export interface TravelDetails {
+  hotelName: string;
+  hotelAddress: string;
+  starRating: number;
+  checkIn: string;
+  checkOut: string;
+  nights: number;
+  rooms: number;
+  guests: number;
+  roomType: string;
+  ratePerNight: number; // cents
+  taxesAndFees: number; // cents
+  resortFee: number; // cents
+  imageUrl: string;
+  freeCancellation: boolean;
+}
+
 // Affirm global types
 declare global {
   interface Window {

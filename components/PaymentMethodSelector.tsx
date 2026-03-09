@@ -29,8 +29,22 @@ export default function PaymentMethodSelector({
   totals,
 }: PaymentMethodSelectorProps) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-lg font-semibold">Payment Method</h2>
+    <div
+      className="bg-white p-6"
+      style={{ border: '1px solid #e0e5ea', borderRadius: '12px' }}
+    >
+      {/* Section Header with Step Number */}
+      <div className="mb-5 flex items-center gap-3">
+        <span
+          className="flex h-7 w-7 items-center justify-center text-sm font-bold text-white"
+          style={{ backgroundColor: '#0068ef', borderRadius: '50%' }}
+        >
+          3
+        </span>
+        <h2 className="text-lg font-bold" style={{ color: '#001833' }}>
+          Payment Details
+        </h2>
+      </div>
 
       <div className="space-y-3">
         {methods.map((method) => (
@@ -38,18 +52,20 @@ export default function PaymentMethodSelector({
             <button
               type="button"
               onClick={() => onSelect(method.id)}
-              className={`flex w-full items-center gap-3 rounded-lg border-2 px-4 py-3 text-left transition-colors ${
-                selected === method.id
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-              }`}
+              className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors"
+              style={{
+                border: `2px solid ${selected === method.id ? '#0068ef' : '#e0e5ea'}`,
+                borderRadius: '10px',
+                backgroundColor: selected === method.id ? '#e8f2ff' : '#ffffff',
+              }}
             >
               <span
-                className={`flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold ${
-                  selected === method.id
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-600"
-                }`}
+                className="flex h-8 w-8 items-center justify-center text-sm font-bold"
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: selected === method.id ? '#0068ef' : '#e0e5ea',
+                  color: selected === method.id ? '#ffffff' : '#4f6f8f',
+                }}
               >
                 {method.id === "affirm" ? (
                   <svg viewBox="0 0 480 166" className="h-5 w-5" fill="currentColor">
@@ -59,19 +75,27 @@ export default function PaymentMethodSelector({
                   method.icon
                 )}
               </span>
-              <span className="text-sm font-medium">{method.label}</span>
+              <span className="text-sm font-medium" style={{ color: '#001833' }}>{method.label}</span>
+              {/* Radio indicator */}
               <span
-                className={`ml-auto h-4 w-4 rounded-full border-2 ${
-                  selected === method.id
-                    ? "border-blue-600 bg-blue-600 shadow-[inset_0_0_0_2px_white]"
-                    : "border-gray-300"
-                }`}
-              />
+                className="ml-auto h-5 w-5 flex items-center justify-center"
+                style={{
+                  border: `2px solid ${selected === method.id ? '#0068ef' : '#c0cad5'}`,
+                  borderRadius: '50%',
+                }}
+              >
+                {selected === method.id && (
+                  <span
+                    className="block h-2.5 w-2.5"
+                    style={{ backgroundColor: '#0068ef', borderRadius: '50%' }}
+                  />
+                )}
+              </span>
             </button>
 
             {/* Inline content for each payment method */}
             {selected === method.id && method.id === "affirm" && (
-              <div className="mt-3 ml-11 rounded-lg border border-blue-100 bg-blue-50/50 p-4">
+              <div className="mt-3 ml-11 p-4" style={{ border: '1px solid #99c3f9', borderRadius: '8px', backgroundColor: '#e8f2ff' }}>
                 <AffirmInlineCheckout
                   items={items}
                   shipping={shipping}
@@ -82,24 +106,24 @@ export default function PaymentMethodSelector({
             )}
 
             {selected === method.id && method.id === "credit-card" && (
-              <div className="mt-3 ml-11 rounded-lg border border-gray-100 bg-gray-50 p-4">
-                <p className="text-sm text-gray-500 italic">
+              <div className="mt-3 ml-11 p-4" style={{ border: '1px solid #e0e5ea', borderRadius: '8px', backgroundColor: '#f4f6f8' }}>
+                <p className="text-sm italic" style={{ color: '#4f6f8f' }}>
                   Credit card form placeholder — this demo focuses on Affirm
                   embedded checkout.
                 </p>
                 <div className="mt-3 space-y-3">
-                  <div className="h-10 rounded-lg bg-gray-200" />
+                  <div className="h-10" style={{ borderRadius: '8px', backgroundColor: '#e0e5ea' }} />
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="h-10 rounded-lg bg-gray-200" />
-                    <div className="h-10 rounded-lg bg-gray-200" />
+                    <div className="h-10" style={{ borderRadius: '8px', backgroundColor: '#e0e5ea' }} />
+                    <div className="h-10" style={{ borderRadius: '8px', backgroundColor: '#e0e5ea' }} />
                   </div>
                 </div>
               </div>
             )}
 
             {selected === method.id && method.id === "paypal" && (
-              <div className="mt-3 ml-11 rounded-lg border border-gray-100 bg-gray-50 p-4">
-                <p className="text-sm text-gray-500 italic">
+              <div className="mt-3 ml-11 p-4" style={{ border: '1px solid #e0e5ea', borderRadius: '8px', backgroundColor: '#f4f6f8' }}>
+                <p className="text-sm italic" style={{ color: '#4f6f8f' }}>
                   PayPal checkout placeholder — this demo focuses on Affirm
                   embedded checkout.
                 </p>
