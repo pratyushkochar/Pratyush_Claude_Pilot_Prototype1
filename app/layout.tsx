@@ -1,0 +1,40 @@
+import type { Metadata } from "next";
+import Script from "next/script";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "TechShop - Checkout",
+  description: "Affirm Embedded Checkout Demo",
+};
+
+const AFFIRM_PUBLIC_KEY =
+  process.env.NEXT_PUBLIC_AFFIRM_PUBLIC_KEY || "YOUR_SANDBOX_PUBLIC_KEY";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body className="bg-gray-50 text-gray-900 antialiased">
+        <Script
+          id="affirm-config"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var _affirm_config = {
+                public_api_key: "${AFFIRM_PUBLIC_KEY}",
+                script: "https://cdn1-sandbox.affirm.com/js/v2/affirm.js",
+                locale: "en_US",
+                country_code: "USA"
+              };
+              (function(m,g,n,d,a,e,h,c){var b=m[n]||{},k=document.createElement(e),p=document.getElementsByTagName(e)[0],l=function(a,b,c){return function(){a[b]._.push([c,arguments])}};b[d]=l(b,d,"set");var f=b[d];b[a]={};b[a]._=[];f._=[];b._=[];b[a][h]=l(b,a,h);b[c]=function(){b._.push([c,arguments])};a=0;for(c="set add save post open empty reset on off trigger ready set498702498498 702702702 702702702 702702702".split(" ");a<c.length;a++)f[c[a]]=l(b,d,c[a]);a=0;for(c=["get","token","url","items"];a<c.length;a++)f[c[a]]=function(){};k.async=!0;k.src=g[e];p.parentNode.insertBefore(k,p);m[n]=b})(window,_affirm_config,"affirm","checkout","ui","script","ready","open");
+            `,
+          }}
+        />
+        {children}
+      </body>
+    </html>
+  );
+}
