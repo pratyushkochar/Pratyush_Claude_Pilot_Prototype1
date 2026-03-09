@@ -4,20 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { CartItem, Address, OrderTotals } from "@/lib/types";
 import { buildCheckoutObject } from "@/lib/affirm";
 
-interface AffirmInlineCheckoutProps {
+interface AffirmEmbeddedCheckoutProps {
   items: CartItem[];
   shipping: Address;
   billing: Address;
   totals: OrderTotals;
 }
 
-export default function AffirmInlineCheckout({
+export default function AffirmEmbeddedCheckout({
   items,
   shipping,
   billing,
   totals,
-}: AffirmInlineCheckoutProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+}: AffirmEmbeddedCheckoutProps) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading"
   );
@@ -40,17 +39,15 @@ export default function AffirmInlineCheckout({
           totals
         );
 
+        // Set checkout data — the <affirm-embedded-checkout> and
+        // <affirm-checkout-confirmation-button> custom elements will
+        // auto-render once affirm.checkout() has been called.
         window.affirm.checkout(checkoutObj);
-        window.affirm.checkout.inline({
-          merchant: {
-            inline_container: "affirm-inline-checkout-container",
-          },
-        });
 
         initializedRef.current = true;
         setStatus("ready");
       } catch (err) {
-        console.error("Affirm inline checkout error:", err);
+        console.error("Affirm embedded checkout error:", err);
         setStatus("error");
       }
     };
@@ -71,10 +68,11 @@ export default function AffirmInlineCheckout({
   }, [items, shipping, billing, totals]);
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2 text-sm text-gray-600">
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-xs" style={{ color: '#4f6f8f' }}>
         <svg
-          className="h-5 w-5 text-blue-600"
+          className="h-4 w-4"
+          style={{ color: '#0068ef' }}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -87,16 +85,22 @@ export default function AffirmInlineCheckout({
           />
         </svg>
         <span>
-          Select a payment plan below. Use any phone number with PIN{" "}
-          <strong>1234</strong> in sandbox mode.
+          Sandbox mode — use any phone number with PIN{" "}
+          <strong style={{ color: '#001833' }}>1234</strong> to test.
         </span>
       </div>
 
       {status === "loading" && (
-        <div className="flex items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-50 py-12">
+        <div
+          className="flex items-center justify-center py-12"
+          style={{ border: '1px dashed #c0cad5', borderRadius: '8px', backgroundColor: '#f4f6f8' }}
+        >
           <div className="text-center">
-            <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
-            <p className="text-sm text-gray-500">
+            <div
+              className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"
+              style={{ borderColor: '#0068ef', borderTopColor: 'transparent' }}
+            />
+            <p className="text-sm" style={{ color: '#4f6f8f' }}>
               Loading Affirm checkout...
             </p>
           </div>
@@ -104,21 +108,24 @@ export default function AffirmInlineCheckout({
       )}
 
       {status === "error" && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div
+          className="p-4 text-sm"
+          style={{ borderRadius: '8px', border: '1px solid #eb9999', backgroundColor: '#fbebeb', color: '#c00' }}
+        >
           <p className="font-medium">Unable to load Affirm checkout</p>
-          <p className="mt-1">
+          <p className="mt-1" style={{ color: '#800' }}>
             Please ensure you have configured a valid Affirm sandbox public API
-            key in your <code className="rounded bg-red-100 px-1">.env.local</code>{" "}
+            key in your <code className="px-1" style={{ backgroundColor: '#fde', borderRadius: '4px' }}>.env.local</code>{" "}
             file.
           </p>
         </div>
       )}
 
-      <div
-        ref={containerRef}
-        id="affirm-inline-checkout-container"
-        className="min-h-[100px]"
-      />
+      {/* Affirm Embedded Checkout — Web Component rendered by affirm.js */}
+      <affirm-embedded-checkout />
+
+      {/* Affirm Confirmation Button — Web Component rendered by affirm.js */}
+      <affirm-checkout-confirmation-button />
     </div>
   );
 }

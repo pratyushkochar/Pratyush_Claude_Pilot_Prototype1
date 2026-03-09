@@ -97,42 +97,29 @@ export default function CheckoutPage() {
               totals={totals}
             />
 
-            {/* Complete Booking Button */}
-            <button
-              type="button"
-              className="w-full px-6 py-3.5 text-base font-bold text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
-              style={{
-                backgroundColor: '#0068ef',
-                borderRadius: '9999px',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0055c4')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#0068ef')}
-              disabled={paymentMethod !== "affirm"}
-              onClick={() => {
-                if (paymentMethod === "affirm" && window.affirm) {
-                  window.affirm.checkout.open({
-                    onSuccess: (result) => {
-                      window.location.href = `/confirm?checkout_token=${result.checkout_token}`;
-                    },
-                    onFail: (error) => {
-                      console.error("Affirm checkout failed:", error);
-                      alert(
-                        "Checkout was cancelled or failed. Please try again."
-                      );
-                    },
-                  });
-                }
-              }}
-            >
-              {paymentMethod === "affirm"
-                ? "Complete Booking with Affirm"
-                : "Complete Booking"}
-            </button>
+            {/* Complete Booking Button — shown only when Affirm is NOT selected,
+                since the <affirm-checkout-confirmation-button> handles Affirm confirmation inline */}
+            {paymentMethod !== "affirm" && (
+              <>
+                <button
+                  type="button"
+                  className="w-full px-6 py-3.5 text-base font-bold text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
+                  style={{
+                    backgroundColor: '#0068ef',
+                    borderRadius: '9999px',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0055c4')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#0068ef')}
+                  disabled
+                >
+                  Complete Booking
+                </button>
 
-            {/* Trust text */}
-            <p className="text-center text-xs" style={{ color: '#4f6f8f' }}>
-              By completing this booking, you agree to our Terms & Conditions and Privacy Policy.
-            </p>
+                <p className="text-center text-xs" style={{ color: '#4f6f8f' }}>
+                  By completing this booking, you agree to our Terms & Conditions and Privacy Policy.
+                </p>
+              </>
+            )}
           </div>
 
           {/* Right Column: Order Summary */}

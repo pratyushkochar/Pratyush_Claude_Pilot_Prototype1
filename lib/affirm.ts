@@ -11,7 +11,7 @@ export function buildCheckoutObject(
       user_confirmation_url: `${typeof window !== "undefined" ? window.location.origin : ""}/confirm`,
       user_cancel_url: `${typeof window !== "undefined" ? window.location.origin : ""}/checkout`,
       user_confirmation_url_action: "GET",
-      name: "TechShop Demo",
+      name: "TravelShop Demo",
     },
     shipping: {
       name: { first: shipping.firstName, last: shipping.lastName },
