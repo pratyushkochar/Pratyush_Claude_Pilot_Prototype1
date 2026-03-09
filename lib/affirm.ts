@@ -48,7 +48,7 @@ export function buildCheckoutObject(
       item_url: item.item_url,
     })),
     metadata: {
-      mode: "modal",
+      mode: "embedded",
     },
     order_id: `DEMO-${Date.now()}`,
     shipping_amount: totals.shipping,

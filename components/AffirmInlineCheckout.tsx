@@ -39,10 +39,15 @@ export default function AffirmEmbeddedCheckout({
           totals
         );
 
-        // Set checkout data — the <affirm-embedded-checkout> and
-        // <affirm-checkout-confirmation-button> custom elements will
-        // auto-render once affirm.checkout() has been called.
+        // Set checkout data and initialize inline rendering.
+        // affirm.checkout() sets the data, then affirm.checkout.inline()
+        // triggers rendering into the embedded checkout elements/container.
         window.affirm.checkout(checkoutObj);
+        window.affirm.checkout.inline({
+          merchant: {
+            inline_container: "affirm-embedded-container",
+          },
+        });
 
         initializedRef.current = true;
         setStatus("ready");
@@ -121,10 +126,11 @@ export default function AffirmEmbeddedCheckout({
         </div>
       )}
 
-      {/* Affirm Embedded Checkout — Web Component rendered by affirm.js */}
+      {/* Affirm Embedded Checkout — custom element + fallback container */}
       <affirm-embedded-checkout />
+      <div id="affirm-embedded-container" className="min-h-[100px]" />
 
-      {/* Affirm Confirmation Button — Web Component rendered by affirm.js */}
+      {/* Affirm Confirmation Button — custom element rendered by affirm.js */}
       <affirm-checkout-confirmation-button />
     </div>
   );
